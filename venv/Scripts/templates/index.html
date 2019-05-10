@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>运营数据</title>
+    <script src="{{ url_for('static', filename='js/jquery-2.2.1.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/rem.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/echarts.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/index.js') }}"></script>
+</head>
+<body>
+<div class="t_container">
+    <header class="t_h_bg">
+        <span>大学生心理分析数据</span>
+    </header>
+    <main class="t_main">
+        <div class="t_box">
+            <!--<header class="t_title">-->
+                <!--<span>本月销售额</span>-->
+                <!--<span class="t_number">230000.00</span>-->
+            <!--</header>-->
+            <!--<div class="t_list">-->
+                <!--<div class="t_min">订单量 <i></i></div>-->
+                <!--<div class="t_min">客流量 100 <i></i></div>-->
+                <!--<div class="t_min">转换率 8% <i class="down"></i></div>-->
+            <!--</div>-->
+            <div id="chart_1" class="echart" style="width: 100%; height: 3.4rem;"></div>
+        </div>
+        <div class="t_box">
+            <header class="t_title">
+                <span>商品销售统计</span>
+            </header>
+            <div id="chart_2" class="echart" style="width: 100%; height: 3rem;"></div>
+        </div>
+        <div class="t_box">
+            <header class="t_title">
+                <span>年度销售额走势图</span>
+            </header>
+            <div id="chart_3" class="echart" style="width: 100%; height: 3rem;"></div>
+        </div>
+        <div class="t_box">
+            <div class="main_table t_btn8">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>销售价格</th>
+                        <th>销售市场</th>
+                        <th>销售任务</th>
+                        <th>销售量</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>21449</td>
+                        <td>26667</td>
+                        <td>18248</td>
+                        <td>20166</td>
+                    </tr>
+                    <tr>
+                        <td>12227</td>
+                        <td>21140</td>
+                        <td>18208</td>
+                        <td>20115</td>
+                    </tr>
+                    <tr>
+                        <td>14977</td>
+                        <td>20505</td>
+                        <td>25342</td>
+                        <td>20114</td>
+                    </tr>
+                    <tr>
+                        <td>17494</td>
+                        <td>19647</td>
+                        <td>20227</td>
+                        <td>20135</td>
+                    </tr>
+                    <tr>
+                        <td>16493</td>
+                        <td>18812</td>
+                        <td>20394</td>
+                        <td>20124</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+</div>
+<style type="text/css">
+        /*简单初始化*/
+html{
+    font-size: 100px;/*设置html字体大小以便rem*/
+}
+html,body{
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+}
+ul{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+a{
+    text-decoration: none;
+}
+/*正文内容*/
+.t_container{
+    width: 100%;
+    height: 100%;
+    background: url("{{ url_for('static', filename='img/bg.png') }}") no-repeat;
+    background-size: 100% 100%;
+}
+.t_h_bg{
+    width: 100%;
+    height: 80px;
+    line-height: 80px;
+    background: url("{{ url_for('static', filename='img/t_header.png') }}") no-repeat;
+    background-size: 100% 100%;
+    text-align: center;
+}
+.t_h_bg span{
+    font-size: 32px;
+    color: #fff;
+    display: inherit;
+}
+.t_main{
+    text-align: center;
+}
+.t_box{
+    width: 8rem;
+    height: 4rem;
+    background: url("{{ url_for('static', filename='img/t_bg.png') }}") no-repeat;
+    background-size: 100% 100%;
+    display: inline-block;
+    float: left;
+    position: relative;
+    margin-left: 1.06rem;
+    margin-top: 0.31rem;
+}
+.t_title{
+    text-align: center;
+    font-size: 0.16rem;
+    color: #fff;
+    font-weight: bold;
+    height: 0.4rem;
+    line-height: 0.4rem;
+    width: 100%;
+    margin-top: 0.4rem;
+}
+.t_list{
+    width: 100%;
+    text-align: center;
+    line-height: 0rem;
+    height: 0.6rem;
+}
+.t_min{
+    display: inline-block;
+    width: 1.4rem;
+    height: 0.4rem;
+    line-height: 0.4rem;
+    background: url("{{ url_for('static', filename='img/t_border.png') }}") no-repeat;
+    background-size: 100% 100%;
+    font-size: 0.16rem;
+    color: #fff;
+    position: relative;
+}
+.t_min i{
+    position: absolute;
+    display: inline-block;
+    width: 0.20rem;
+    height: 0.28rem;
+    background: url("{{ url_for('static', filename='img/top.png') }}") no-repeat;
+    background-size: 100% 100%;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    right: 0.05rem;
+}
+.t_min i.down{
+    background: url("{{ url_for('static', filename='img/down.png') }}") no-repeat;
+    background-size: 100% 100%;
+}
+.t_number{
+    font-size: 0.24rem;
+}
+.main_table{
+    font-size: 16px;
+}
+.main_table tr{
+    height: 42px;
+}
+.main_table{
+    width: 88%;
+    margin-top: 25px;
+    margin: 0 auto;
+}
+.main_table table{
+    width: 100%;
+}
+.main_table thead tr{
+    height: 42px;
+}
+.main_table th{
+    font-size: 14px;
+    font-weight: 600;
+    color:#61d2f7;
+    text-align: center;
+}
+
+.main_table td{
+    color:#fff;
+    font-size: 14px;
+    text-align: center;
+}
+.main_table tbody tr:nth-child(1),
+.main_table tbody tr:nth-child(3),
+.main_table tbody tr:nth-child(5){
+    width: 98%;
+    background-color: #2B3AA8;
+    box-shadow:-10px 0px 15px #2C58A6 inset,   /*左边阴影*/
+    10px 0px 15px #2C58A6 inset;  /*右边阴影*/
+}
+
+
+</style>
+</body>
+</html>
