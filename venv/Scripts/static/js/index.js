@@ -2,12 +2,34 @@ $(function () {
     echart_1();
     echart_2();
     echart_3();
-function echart_1() {
+function myJson(url = "/api/test") {
+    var data2;
+    var localHttpHost = 'http://127.0.0.1:5000'
+    url2 = localHttpHost+url;
+    $.ajax({
+        type: "get",
+        url: url2,
+        data: {
+            appid: ""
+        },
+//        dataType: "json",
+        cache: false,
+        async: false,
+        success: function(data) {
+            data2  = data
+//            console.log(data);
+            // 获取json数据后传递给图表函数（回调）
+        }
+    });
+    console.log(data2);
+    return data2;
+};
+    function echart_1() {
         // 基于准备好的dom，初始化echarts实例
         var myChart = echarts.init(document.getElementById('chart_1'));
         option = {
             title: {
-                text: '本月设备状态统计',
+                text: '总体存在心理问题人数比例',
                 top: 35,
                 left: 20,
                 textStyle: {
@@ -23,7 +45,7 @@ function echart_1() {
             legend: {
                 right: 20,
                 top: 35,
-                data: ['故障', '正常'],
+                data: ['存在心理问题', '正常'],
                 textStyle: {
                     color: '#fff'
                 }
@@ -42,7 +64,7 @@ function echart_1() {
                 },
                 data: [{
                         value: 6,
-                        name: '故障'
+                        name: '存在心理问题'
                     },
                     {
                         value: 50,
@@ -116,7 +138,7 @@ function echart_1() {
             },
             yAxis: {
                 type: 'category',
-                data: ['茶几1','床头柜','斗柜','大床','电视柜'],
+                data: ['严重心理问题','明显症状','需要心理干预','亚健康人数'],
                 axisTick: {
                     show: false
                 },
@@ -154,31 +176,16 @@ function echart_1() {
                     }
                 },
                 type: 'bar',
-                data: [260,210,190,170,170]
+                data: myJson('/api/zhuzhuangY'),
             },{
                 type: 'pie',
-                radius: [30, '80%'],
-                center: ['75%', '50%'],
+                radius: [70, '80%'],
+                center: ['75%', '59%'],
                 roseType: 'radius',
                 color: [ '#C1232B','#B5C334','#FCCE10','#E87C25','#27727B',
                 '#FE8463','#9BCA63','#FAD860','#F3A43B','#60C0DD',
                 '#D7504B','#C6E579','#F4E001','#F0805A','#26C0C0'],
-                data: [{
-                    value: 28,
-                    name: '茶几1'
-                }, {
-                    value: 21,
-                    name: '床头柜'
-                }, {
-                    value: 20,
-                    name: '斗柜'
-                }, {
-                    value: 17,
-                    name: '大床'
-                }, {
-                    value: 17,
-                    name: '电视柜'
-                }],
+                data: myJson('/api/test'),
                 label: {
                     normal: {
                         textStyle: {
@@ -215,217 +222,54 @@ function echart_1() {
 
     function echart_3() {
         // 基于准备好的dom，初始化echarts实例
-        var myChart = echarts.init(document.getElementById('chart_3'));  
-        
+        var myChart = echarts.init(document.getElementById('chart_3'));
         option = {
-            // backgroundColor: "#404A59",
-            color: ["#036BC8", "#5EBEFC", "#2EF7F3"],
-        
-            title: [{
-                text: '',
-                left: '1%',
-                top: '6%',
+            title: {
+                text: '男女心理状况分布',
+                top: 35,
+                left: 20,
+                textStyle: {
+                    fontSize: 18,
+                    color: '#fff'
+                }
+            },
+            tooltip: {
+                trigger: 'item',
+                formatter: "{a} <br/>{b}: {c} ({d}%)",
+
+            },
+            legend: {
+                right: 20,
+                top: 35,
+                data: ['男性', '女性'],
                 textStyle: {
                     color: '#fff'
                 }
-            }, {
-                text: '',
-                left: '83%',
-                top: '6%',
-                textAlign: 'center',
-                textStyle: {
-                    color: '#fff',
-                    fontSize: 16
-                }
-            }],
-            tooltip: {
-                trigger: 'axis'
-            },
-            legend: {
-                x: 300,
-                top: '7%',
-                textStyle: {
-                    color: '#ffd285',
-                },
-                data: ['2016年', '2017年', '2018年']
-            },
-            grid: {
-                left: '1%',
-                right: '28%',
-                top: '16%',
-                bottom: '6%',
-                containLabel: true
-            },
-            toolbox: {
-                "show": false,
-                feature: {
-                    saveAsImage: {}
-                }
-            },
-            xAxis: {
-                type: 'category',
-                "axisLine": {
-                    lineStyle: {
-                        color: '#fff'
-                    }
-                },
-                "axisTick": {
-                    "show": false
-                },
-                axisLabel: {
-                    textStyle: {
-                        color: '#fff'
-                    }
-                },
-                boundaryGap: false,
-                data: ['1', '2', '3', '4', '5', '6', '7','8','9','10','11','12']
-            },
-            yAxis: {
-                "axisLine": {
-                    lineStyle: {
-                        color: '#fff'
-                    }
-                },
-                splitLine: {
-                    show: false,
-                    lineStyle: {
-                        color: '#fff'
-                    }
-                },
-                "axisTick": {
-                    "show": false
-                },
-                axisLabel: {
-                    textStyle: {
-                        color: '#fff'
-                    }
-                },
-                type: 'value'
             },
             series: [{
-                name: '',
-                smooth: true,
-                type: 'line',
-                symbolSize: 9,
-                  symbol: 'circle',
-                data: [90, 50, 39, 50, 120, 82, 80, 89, 92, 80, 102, 77]
-            }, {
-                name: '',
-                smooth: true,
-                type: 'line',
-                symbolSize: 9,
-                  symbol: 'circle',
-                data: [70, 50, 50, 87, 90, 80, 70, 77, 86, 94, 96, 99]
-            }, {
-                name: '',
-                smooth: true,
-                type: 'line',
-                symbolSize: 9,
-                  symbol: 'circle',
-                data: [100, 112, 80, 132, 60, 70, 90, 131, 121, 102, 95, 105 ]
-            }, 
-            {
+                name: '设备状态',
                 type: 'pie',
-                center: ['83%', '33%'],
-                radius: ['30%', '35%'],
+                radius: ['0', '60%'],
+                center: ['50%', '60%'],
+                color: ['#e72325', '#98e002', '#2ca3fd'],
                 label: {
                     normal: {
-                        position: 'center'
-                    }
-                },
-                data: [{
-                    value: 335,
-                    name: '销售分析',
-                    itemStyle: {
-                        normal: {
-                            color: '#FF7E45'
-                        }
+                        formatter: '{b}\n{d}%'
                     },
-                    label: {
-                        normal: {
-                            formatter: '{d} %',
-                            textStyle: {
-                                color: '#ffd285',
-                                fontSize: 14
-        
-                            }
-                        }
-                    }
-                }, {
-                    value: 180,
-                    name: '占位',
-                    tooltip: {
-                        show: false
-                    },
-                    itemStyle: {
-                        normal: {
-                            color: '#fff'
-                        }
-                    },
-                    label: {
-                        normal: {
-                            textStyle: {
-                                color: '#ffd285',
-                            },
-                            formatter: '\n销售渠道'
-                        }
-                    }
-                }]
-            },
-        
-        
-            {
-                type: 'pie',
-                center: ['83%', '72%'],
-                radius: ['30%', '35%'],
-                label: {
-                    normal: {
-                        position: 'center'
-                    }
-                },
-                data: [{
-                    value: 435,
-                    name: '销售分析',
-                    itemStyle: {
-                        normal: {
-                            color: '#4834CB'
-                        }
-                    },
-                    label: {
-                        normal: {
-                            formatter: '{d} %',
-                            textStyle: {
-                                color: '#fff',
-                                fontSize: 14
-        
-                            }
-                        }
-                    }
-                }, {
-                    value: 100,
-                    name: '占位',
-                    tooltip: {
-                        show: false
-                    },
-                    itemStyle: {
-                        normal: {
-                            color: '#fff'
-        
-        
-                        }
-                    },
-                    label: {
-                        normal: {
-                            textStyle: {
-                                color: '#fff',
-                            },
-                            formatter: '\n销售方向'
-                        }
-                    }
-                }]
-            }]
-        }
 
+                },
+                data: [{
+                        value: 6,
+                        name: '男性'
+                    },
+                    {
+                        value: 50,
+                        name: '女性',
+                        selected: true
+                    }
+                ]
+            }]
+        };
         // 使用刚指定的配置项和数据显示图表。
         myChart.setOption(option);
         window.addEventListener("resize", function () {
