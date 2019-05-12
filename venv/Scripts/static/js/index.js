@@ -62,16 +62,7 @@ function myJson(url = "/api/test") {
                     },
 
                 },
-                data: [{
-                        value: 6,
-                        name: '存在心理问题'
-                    },
-                    {
-                        value: 50,
-                        name: '正常',
-                        selected: true
-                    }
-                ]
+                data: myJson('/api/total')
             }]
         };
         // 使用刚指定的配置项和数据显示图表。
@@ -225,7 +216,7 @@ function myJson(url = "/api/test") {
         var myChart = echarts.init(document.getElementById('chart_3'));
         option = {
             title: {
-                text: '男女心理状况分布',
+                text: '存在心里问题的男女比例',
                 top: 35,
                 left: 20,
                 textStyle: {
@@ -258,16 +249,7 @@ function myJson(url = "/api/test") {
                     },
 
                 },
-                data: [{
-                        value: 6,
-                        name: '男性'
-                    },
-                    {
-                        value: 50,
-                        name: '女性',
-                        selected: true
-                    }
-                ]
+                data: myJson('/api/sexPercent')
             }]
         };
         // 使用刚指定的配置项和数据显示图表。

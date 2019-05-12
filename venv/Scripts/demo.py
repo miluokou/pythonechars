@@ -11,10 +11,6 @@ app = Flask(__name__)
 
 
 ms = MSSQL(host="localhost", user="sa", pwd="root", db="xinhai")
-# resList = ms.ExecQuery("SELECT * FROM aat1")
-
-
-# # print(resListValue)
 client = MongoClient('localhost', 27017)
 db = client.cache
 
@@ -37,12 +33,15 @@ def MongoCache(Query,sql):
 resultSql = 'SELECT studentid,score_raw,score_t from result WHERE score_raw is not null'
 resultExistRes = MongoCache('result',resultSql)
 resultSum = len(resultExistRes)
+
 resultExistRes2 ={}
 scoreMoreThan160 = {}
 sub_health = {}
 ObviousSymptoms = {}
 psychologicalIntervention = {}
 SeriousProblems = {}
+studentIds = []
+i = 0
 for resultSingle in resultExistRes:
     if resultSingle[1].split('|')[-2] > '160' :
         scoreMoreThan160[resultSingle[0]] = resultSingle[1].split('|')[-2]
@@ -55,20 +54,13 @@ for resultSingle in resultExistRes:
         if resultSingle[2].split('|')[-1] >= '5':
             SeriousProblems[resultSingle[0]] = resultSingle[2].split('|')[-1]
     resultExistRes2[resultSingle[0]] = resultSingle[1].split('|')[-2]
-
+    studentIds.insert(i,resultSingle[0])
+    i = i+1
 scoreMoreThan160Count = len(scoreMoreThan160)
 subHealthCount = len(sub_health)
 ObviousSymptomsCount = len(ObviousSymptoms)
 psychologicalInterventionCount = len(psychologicalIntervention)
 SeriousProblemsCount = len(SeriousProblems)
-
-    # '总分大于160分的人数':scoreMoreThan160Count,
-    # '亚健康人数': subHealthCount,
-    # '明显症状人数': ObviousSymptomsCount,
-    # '需要心理干预人数': psychologicalInterventionCount,
-    # '严重心理问题人数': SeriousProblemsCount,
-    # # '人数':(scoreMoreThan160Count-subHealthCount-ObviousSymptomsCount-psychologicalInterventionCount-SeriousProblemsCount)
-# }
 
 @app.route('/api/test')
 def test():
@@ -91,14 +83,35 @@ def zhuzhuangY():
         ]
     return Response(json.dumps(CountDetail), mimetype='application/json')
 
-@app.route('/api/score')
+@app.route('/api/total')
 def score():
-    return Response(json.dumps(resultExistRes2), mimetype='application/json')
+    total = [
+        {'value': scoreMoreThan160Count, 'name': '存在心理问题','selected': 'true'},
+        {'value': resultSum -scoreMoreThan160Count, 'name': '正常'},
+    ]
+    return Response(json.dumps(total), mimetype='application/json')
 # return render_template('hello.html',resListValue = resultExistRes2)
 @app.route('/')
 def index():
     return render_template('index.html')
 
+@app.route('/api/sexPercent')
+def sexPercent():
+    studentIdsSql =str(studentIds)
+    studentIdsSql = studentIdsSql.replace('[','(')
+    studentIdsSql = studentIdsSql.replace(']',')')
+    resultSql = 'SELECT id,sex from student WHERE id in' + studentIdsSql
+    studentExistRes = MongoCache('students', resultSql)
+    resultSum = len(resultExistRes)
+    male = 0
+    for res in studentExistRes:
+        if res :
+            male = male + 1
+    stuPercent = [
+        {'value': male, 'name': '男性', 'selected': 'true'},
+        {'value': resultSum - male, 'name': '女性'},
+    ]
+    return Response(json.dumps(stuPercent), mimetype='application/json')
 # @app.route('/hello')
 # def hello():
     # return json.dumps(resList, ensure_ascii=False)
